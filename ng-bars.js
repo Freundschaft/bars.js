@@ -70,12 +70,12 @@ angular.module('bars', [])
 
                 angular.element($window).bind("scroll", function () {
                     angular.forEach(scope.bars, function (bar) {
-                        var docViewTop = angular.element($window).scrollTop();
-                        var docViewBottom = docViewTop + angular.element($window).height();
-                        var elemTop = bar.element.offset().top;
-                        var elemBottom = elemTop + bar.element.height();
+                        var docViewTop = $window.pageYOffset;
+                        var docViewBottom = docViewTop + $window.innerHeight;
+                        var elemTop = bar.element[0].getBoundingClientRect().top;
+                        var elemBottom = elemTop + bar.element[0].offsetHeight;
                         if (docViewBottom > elemBottom - 45) {
-                            bar.element.css('width', bar.value / maxValue * 100 + '%');
+                            bar.element[0].css('width', bar.value / maxValue * 100 + '%');
                         }
                     });
                 });
