@@ -1,17 +1,18 @@
 'use strict';
 
 angular.module('bars', [])
-    .directive('barGroup', function () {
+    .directive('barGroup', function ($window, $document) {
         return {
             replace: false,
             scope: {
                 value: '='
             },
             link: function (scope, element, attrs, controller) {
+                scope.bars = [];
                 var barElements = element.children(),
-                    bars = [],
                     replaceElement = angular.element('<div class="bar_group"></div>'),
                     maxValue = attrs.max || 0;
+
                 angular.forEach(barElements, function (barElement) {
                     var barValue = parseFloat(barElement.attributes['value'].nodeValue);
                     var newBar = {value: barValue};
@@ -31,14 +32,14 @@ angular.module('bars', [])
                         newBar.class = barElement.attributes['class'].nodeValue;
                     }
 
-                    bars.push(newBar);
+                    scope.bars.push(newBar);
                     if (maxValue < barValue) {
                         maxValue = barValue;
                     }
                 });
 
-                angular.forEach(bars, function (bar) {
-                    var barElement = angular.element('<div class="bar_group__bar" style="width:' + bar.value / maxValue * 100.0 + '%;"></div>');
+                angular.forEach(scope.bars, function (bar) {
+                    var barElement = angular.element('<div class="bar_group__bar"></div>');
 
                     if (bar.class) {
                         barElement.addClass(bar.class);
@@ -61,10 +62,23 @@ angular.module('bars', [])
                             barElement.append('<p class="bar_label_max">' + maxValue + '</p>');
                         }
                     }
+                    bar.element = barElement;
                     replaceElement.append(barElement);
                 });
 
                 element.replaceWith(replaceElement);
+
+                angular.element($window).bind("scroll", function () {
+                    angular.forEach(scope.bars, function (bar) {
+                        var docViewTop = $window.scrollTop();
+                        var docViewBottom = docViewTop + $window.height();
+                        var elemTop = bar.element.offset().top;
+                        var elemBottom = elemTop + bar.element.height();
+                        if (docViewBottom > elemBottom - 45) {
+                            bar.element.css('width', bar.value / maxValue * 100 + '%');
+                        }
+                    });
+                });
             }
         };
     });
