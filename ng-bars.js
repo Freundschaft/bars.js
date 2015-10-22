@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bars', [])
-    .directive('barGroup', function ($timeout, $ionicScrollDelegate) {
+    .directive('barGroup', function () {
         return {
             replace: false,
             scope: {
