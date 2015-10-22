@@ -73,7 +73,7 @@ angular.module('bars', [])
                         var docViewTop = $window.pageYOffset;
                         var docViewBottom = docViewTop + $window.innerHeight;
                         var elemTop = bar.element[0].getBoundingClientRect().top + docViewTop;
-                        var elemBottom = elemTop + bar.element[0].offsetHeight + docViewTop;
+                        var elemBottom = elemTop + bar.element[0].offsetHeight;
                         if (docViewBottom > elemBottom - 45) {
                             bar.element.css('width', bar.value / maxValue * 100 + '%');
                         }
