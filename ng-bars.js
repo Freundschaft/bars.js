@@ -9,6 +9,17 @@ angular.module('bars', [])
             },
             link: function (scope, element, attrs, controller) {
                 scope.element = element;
+                var checkAndRefreshBars = function () {
+                    angular.forEach(scope.bars, function (bar) {
+                        var docViewTop = $window.pageYOffset;
+                        var docViewBottom = docViewTop + $window.innerHeight;
+                        var elemTop = bar.element[0].getBoundingClientRect().top + docViewTop;
+                        var elemBottom = elemTop + bar.element[0].offsetHeight;
+                        if (docViewBottom > elemBottom - 45) {
+                            bar.element.css('width', bar.value / maxValue * 100 + '%');
+                        }
+                    });
+                };
                 var refreshBars = function () {
                     scope.bars = [];
                     var barElements = scope.element.children(),
@@ -74,18 +85,8 @@ angular.module('bars', [])
                     });
                     scope.element.empty();
                     scope.element.append(replaceElement);
-
-                    $timeout(function () {
-                        angular.forEach(scope.bars, function (bar) {
-                            var docViewTop = $window.pageYOffset;
-                            var docViewBottom = docViewTop + $window.innerHeight;
-                            var elemTop = bar.element[0].getBoundingClientRect().top + docViewTop;
-                            var elemBottom = elemTop + bar.element[0].offsetHeight;
-                            if (docViewBottom > elemBottom - 45) {
-                                bar.element.css('width', bar.value / maxValue * 100 + '%');
-                            }
-                        });
-                    }, 0);
+					angular.element($window).unbind("scroll", checkAndRefreshBars);
+					angular.element($window).bind("scroll", checkAndRefreshBars);
                 };
 
                 refreshBars();
