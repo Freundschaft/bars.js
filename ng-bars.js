@@ -72,8 +72,8 @@ angular.module('bars', [])
                     angular.forEach(scope.bars, function (bar) {
                         var docViewTop = $window.pageYOffset;
                         var docViewBottom = docViewTop + $window.innerHeight;
-                        var elemTop = bar.element[0].getBoundingClientRect().top;
-                        var elemBottom = elemTop + bar.element[0].offsetHeight;
+                        var elemTop = bar.element[0].getBoundingClientRect().top + docViewTop;
+                        var elemBottom = elemTop + bar.element[0].offsetHeight + docViewTop;
                         if (docViewBottom > elemBottom - 45) {
                             bar.element.css('width', bar.value / maxValue * 100 + '%');
                         }
