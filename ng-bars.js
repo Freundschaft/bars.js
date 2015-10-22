@@ -11,7 +11,7 @@ angular.module('bars', [])
                 var barElements = element.children(),
                     bars = [],
                     replaceElement = angular.element('<div class="bar_group"></div>'),
-                    maxValue = 0;
+                    maxValue = attrs.max || 0;
                 angular.forEach(barElements, function (barElement) {
                     var barValue = parseFloat(barElement.attributes['value'].nodeValue);
                     var newBar = {value: barValue};
