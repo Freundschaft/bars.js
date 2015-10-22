@@ -75,7 +75,7 @@ angular.module('bars', [])
                         var elemTop = bar.element[0].getBoundingClientRect().top;
                         var elemBottom = elemTop + bar.element[0].offsetHeight;
                         if (docViewBottom > elemBottom - 45) {
-                            bar.element[0].css('width', bar.value / maxValue * 100 + '%');
+                            bar.element.css('width', bar.value / maxValue * 100 + '%');
                         }
                     });
                 });
