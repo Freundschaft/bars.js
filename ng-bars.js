@@ -16,15 +16,15 @@ angular.module('bars', [])
                         var elemTop = bar.element[0].getBoundingClientRect().top + docViewTop;
                         var elemBottom = elemTop + bar.element[0].offsetHeight;
                         if (docViewBottom > elemBottom - 45) {
-                            bar.element.css('width', bar.value / maxValue * 100 + '%');
+                            bar.element.css('width', bar.value / scope.maxValue * 100 + '%');
                         }
                     });
                 };
                 var refreshBars = function () {
                     scope.bars = [];
                     var barElements = scope.element.children(),
-                        replaceElement = angular.element('<div class="bar_group"></div>'),
-                        maxValue = attrs.max || 0;
+                        replaceElement = angular.element('<div class="bar_group"></div>');
+                    scope.maxValue = attrs.max || 0;
                     if (scope.source) {
                         scope.bars = scope.source;
                     } else {
@@ -70,21 +70,22 @@ angular.module('bars', [])
                             barElement.css('margin-bottom', '40px');
                             if (bar.unit) {
                                 barElement.append('<p class="bar_label_min">0 ' + bar.unit + '</p>');
-                                barElement.append('<p class="bar_label_max">' + maxValue + ' ' + bar.unit + '</p>');
+                                barElement.append('<p class="bar_label_max">' + scope.maxValue + ' ' + bar.unit + '</p>');
                             } else {
                                 barElement.append('<p class="bar_label_min">0</p>');
-                                barElement.append('<p class="bar_label_max">' + maxValue + '</p>');
+                                barElement.append('<p class="bar_label_max">' + scope.maxValue + '</p>');
                             }
                         }
                         bar.element = barElement;
                         replaceElement.append(barElement);
 
-                        if (maxValue < bar.value) {
-                            maxValue = bar.value;
+                        if (scope.maxValue < bar.value) {
+                            scope.maxValue = bar.value;
                         }
                     });
                     scope.element.empty();
                     scope.element.append(replaceElement);
+
 					angular.element($window).unbind("scroll", checkAndRefreshBars);
 					angular.element($window).bind("scroll", checkAndRefreshBars);
                 };
