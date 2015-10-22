@@ -70,8 +70,8 @@ angular.module('bars', [])
 
                 angular.element($window).bind("scroll", function () {
                     angular.forEach(scope.bars, function (bar) {
-                        var docViewTop = $window.scrollTop();
-                        var docViewBottom = docViewTop + $window.height();
+                        var docViewTop = angular.element($window).scrollTop();
+                        var docViewBottom = docViewTop + angular.element($window).height();
                         var elemTop = bar.element.offset().top;
                         var elemBottom = elemTop + bar.element.height();
                         if (docViewBottom > elemBottom - 45) {
